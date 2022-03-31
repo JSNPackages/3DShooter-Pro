@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Cinemachine;
+using Photon.Pun;
 using StarterAssets;
 using UnityEngine.InputSystem;
 
@@ -15,6 +16,9 @@ public class ThirdPersonShooterController : MonoBehaviour
 
     private ThirdPersonController thirdPersonController;
     private StarterAssetsInputs starterAssetsInputs;
+    
+    private PhotonView view;
+    public bool isMoving = false;
 
     private void Awake()
     {
@@ -24,12 +28,14 @@ public class ThirdPersonShooterController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        
+        this.view = GetComponent<PhotonView>();
     }
 
     // Update is called once per frame
     void Update()
     {
+        if (!this.view.IsMine) return;
+        
         Vector3 mouseWorldPosition = Vector3.zero;
         Vector2 screenCenterPoint = new Vector2(Screen.width / 2f, Screen.height / 2f);
         Ray ray = Camera.main.ScreenPointToRay(screenCenterPoint);
