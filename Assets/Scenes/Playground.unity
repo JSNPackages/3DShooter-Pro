@@ -947,6 +947,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 1
   debugTransform: {fileID: 66496051}
+  value: 11
 --- !u!1 &874605735
 GameObject:
   m_ObjectHideFlags: 0

@@ -16,6 +16,12 @@ public class ThirdPersonShooterController : MonoBehaviour
     private ThirdPersonController thirdPersonController;
     private StarterAssetsInputs starterAssetsInputs;
     public int value = 11;
+    private float nextTimeToShoot = 0.2f;
+    private float nextTimeToShootTimer;
+    private int magazineSize = 15;
+    private float reloadTime = 2.5f;
+    private float reloadTimer;
+    private int ammoLeftInMagazine;
 
     private void Awake()
     {
@@ -25,12 +31,14 @@ public class ThirdPersonShooterController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        
+        ammoLeftInMagazine = magazineSize;
     }
 
     // Update is called once per frame
     void Update()
     {
+        nextTimeToShootTimer += Time.deltaTime;
+        
         Vector3 mouseWorldPosition = Vector3.zero;
         Vector2 screenCenterPoint = new Vector2(Screen.width / 2f, Screen.height / 2f);
         Ray ray = Camera.main.ScreenPointToRay(screenCenterPoint);
@@ -57,11 +65,13 @@ public class ThirdPersonShooterController : MonoBehaviour
             thirdPersonController.SetSensitivity(normalSensitivity);
             
         }
-        if (starterAssetsInputs.shoot)
+        if (starterAssetsInputs.shoot && nextTimeToShootTimer >= nextTimeToShoot && ammoLeftInMagazine > 0)
         {
             if (hitTransform != null)
             {
-                if(hitTransform.GetComponent<BulletTarget>() != null)
+                ammoLeftInMagazine -= 1;
+                
+                if (hitTransform.GetComponent<BulletTarget>() != null)
                 {
 
                     FindObjectOfType<BulletTarget>().TakeDamage(value);
@@ -70,10 +80,24 @@ public class ThirdPersonShooterController : MonoBehaviour
                 {
                     print("Hit something other than enemy");
                 }
+            
             }
             starterAssetsInputs.shoot = false;
+            nextTimeToShootTimer = 0f;
         }
-        
+        if (ammoLeftInMagazine == 0)
+        {
+            
+            reloadTimer += Time.deltaTime;
+
+            if (reloadTimer >= reloadTime)
+            {
+
+                ammoLeftInMagazine = magazineSize;
+                reloadTimer = 0f;
+            }
+        }
+
 
     }
    
