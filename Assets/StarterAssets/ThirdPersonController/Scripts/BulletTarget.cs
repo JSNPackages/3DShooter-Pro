@@ -4,15 +4,17 @@ using UnityEngine;
 
 public class BulletTarget : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
+    
+    private int health = 100;
+   
+    public void TakeDamage(int value)
     {
-        
+        health -= value;
+        if (health <= 0)
+        {
+            print("GameOver");
+        }
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
+
 }

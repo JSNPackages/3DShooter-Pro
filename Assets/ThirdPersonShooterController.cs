@@ -15,6 +15,7 @@ public class ThirdPersonShooterController : MonoBehaviour
 
     private ThirdPersonController thirdPersonController;
     private StarterAssetsInputs starterAssetsInputs;
+    public int value = 11;
 
     private void Awake()
     {
@@ -62,7 +63,8 @@ public class ThirdPersonShooterController : MonoBehaviour
             {
                 if(hitTransform.GetComponent<BulletTarget>() != null)
                 {
-                    Debug.Log("Hej");
+
+                    FindObjectOfType<BulletTarget>().TakeDamage(value);
                 }
                 else
                 {
