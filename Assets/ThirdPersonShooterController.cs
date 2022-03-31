@@ -33,10 +33,12 @@ public class ThirdPersonShooterController : MonoBehaviour
         Vector3 mouseWorldPosition = Vector3.zero;
         Vector2 screenCenterPoint = new Vector2(Screen.width / 2f, Screen.height / 2f);
         Ray ray = Camera.main.ScreenPointToRay(screenCenterPoint);
+        Transform hitTransform = null;
         if (Physics.Raycast(ray, out RaycastHit raycastHit, 999f, aimColliderLayerMask))
         {
             debugTransform.position = raycastHit.point;
             mouseWorldPosition = raycastHit.point;
+            hitTransform = raycastHit.transform;
         }
         if (starterAssetsInputs.aim)
         {
@@ -52,6 +54,22 @@ public class ThirdPersonShooterController : MonoBehaviour
         {
             aimVirtualCamera.gameObject.SetActive(false);
             thirdPersonController.SetSensitivity(normalSensitivity);
+            
+        }
+        if (starterAssetsInputs.shoot)
+        {
+            if (hitTransform != null)
+            {
+                if(hitTransform.GetComponent<BulletTarget>() != null)
+                {
+                    Debug.Log("Hej");
+                }
+                else
+                {
+                    print("Hit something other than enemy");
+                }
+            }
+            starterAssetsInputs.shoot = false;
         }
         
 
